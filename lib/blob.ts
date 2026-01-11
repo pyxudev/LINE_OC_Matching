@@ -19,6 +19,7 @@ export async function saveIndex(ids: number[]) {
   await put(INDEX_PATH, JSON.stringify(ids), {
     access: "public",
     contentType: "application/json",
+    allowOverwrite: true
   });
 }
 
@@ -26,6 +27,7 @@ export async function saveIdea(id: number, data: any) {
   await put(`ideas/${id}.json`, JSON.stringify(data), {
     access: "public",
     contentType: "application/json",
+    allowOverwrite: true
   });
 }
 
