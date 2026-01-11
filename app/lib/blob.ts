@@ -1,11 +1,6 @@
 import { put, head } from "@vercel/blob";
 
-const BASE_URL = "https://blob.vercel-storage.com";
-const INDEX_PATH = "projects/index.json";
-
-function blobUrl(path: string) {
-  return `${BASE_URL}/${path}`;
-}
+const INDEX_URL = process.env.BLOB_INDEX_URL!;
 
 /* --------------------
    index.json
@@ -13,14 +8,9 @@ function blobUrl(path: string) {
 
 export async function readIndex() {
   try {
-    await head(INDEX_PATH, {
-      token: process.env.BLOB_READ_WRITE_TOKEN!,
-    });
-
-    const res = await fetch(blobUrl(INDEX_PATH), {
+    const res = await fetch(INDEX_URL, {
       cache: "no-store",
     });
-
     if (!res.ok) throw new Error();
     return await res.json();
   } catch {
@@ -30,7 +20,7 @@ export async function readIndex() {
 
 export async function writeIndex(data: any) {
   await put(
-    INDEX_PATH,
+    "projects/index.json",
     JSON.stringify(data),
     {
       access: "public",
@@ -45,28 +35,21 @@ export async function writeIndex(data: any) {
 -------------------- */
 
 export async function readProject(id: string) {
-  const path = `projects/${id}.json`;
+  const url = INDEX_URL.replace(
+    "projects/index.json",
+    `projects/${id}.json`
+  );
 
-  await head(path, {
-    token: process.env.BLOB_READ_WRITE_TOKEN!,
-  });
-
-  const res = await fetch(blobUrl(path), {
-    cache: "no-store",
-  });
-
+  const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) {
     throw new Error("Project not found");
   }
-
   return await res.json();
 }
 
 export async function writeProject(id: string, data: any) {
-  const path = `projects/${id}.json`;
-
   await put(
-    path,
+    `projects/${id}.json`,
     JSON.stringify(data),
     {
       access: "public",

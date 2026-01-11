@@ -2,17 +2,6 @@ import { readIndex } from "./lib/blob";
 import { createProject } from "./actions/createProject";
 import { applyProject } from "./actions/applyProject";
 
-import { put } from "@vercel/blob";
-
-await put(
-  "projects/index.json",
-  JSON.stringify({ projects: [] }),
-  {
-    access: "public",
-    token: process.env.BLOB_READ_WRITE_TOKEN!,
-  }
-);
-
 export default async function Page() {
   const index = await readIndex();
 

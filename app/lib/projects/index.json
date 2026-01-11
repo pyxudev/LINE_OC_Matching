@@ -1,11 +1,1 @@
-{
-  "projects": [
-    {
-      "id": "uuid-1",
-      "title": "OSS向けLintツール",
-      "projectUrl": "https://blob.vercel-storage.com/....json",
-      "applicantCount": 2,
-      "createdAt": "2026-01-10T12:00:00Z"
-    }
-  ]
-}
+{"id":"c0a9ab75-1326-430e-901b-404f6ccd2a8c","title":"(半分サンプル)このアプリの機能開発および保守","description":"一応お手伝いも募集もしてます。\r\n必要があれば機能の追加開発とBug修復などを行います。\r\nご要望やBugをみつけた際はIssue(https://github.com/pyxudev/LINE_OC_Matching/issues)あげてください。","owner":{"chatName":"Justin","email":"xsq51py@gmail.com"},"applicants":[],"createdAt":"2026-01-11T18:21:28.494Z","isActive":true}
