@@ -36,7 +36,7 @@ export default function Page() {
       body: JSON.stringify(form),
     });
     setForm({ title: "", detail: "", ownerName: "", ownerEmail: "" });
-    load();
+    await load();
   }
 
   async function apply(id: number) {
@@ -52,7 +52,7 @@ export default function Page() {
         applicantEmail: email,
       }),
     });
-    load();
+    await load();
   }
   
 
