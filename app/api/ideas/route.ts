@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const ids = await getIndex();
+  console.log("ids:", ids);
   const ideas = await Promise.all(ids.map(id => getIdea(id)));
   return NextResponse.json(ideas);
 }
