@@ -1,64 +1,95 @@
-import { readIndex } from "./lib/blob";
-import { createProject } from "./actions/projectActions";
-import { applyProject } from "./actions/projectActions";
+"use client";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+import { useEffect, useState } from "react";
+import { Idea } from "@/types/idea";
 
-export default async function Page() {
-  const { projects } = await readIndex();
+export default function Page() {
+  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [form, setForm] = useState({
+    title: "",
+    detail: "",
+    ownerName: "",
+    ownerEmail: "",
+  });
+
+  async function load() {
+    const res = await fetch("/api/ideas");
+    setIdeas(await res.json());
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function submit() {
+    await fetch("/api/ideas", {
+      method: "POST",
+      body: JSON.stringify(form),
+    });
+    setForm({ title: "", detail: "", ownerName: "", ownerEmail: "" });
+    load();
+  }
+
+  async function apply(id: number) {
+    const name = prompt("オープンチャット名");
+    const email = prompt("メールアドレス");
+    if (!name || !email) return;
+
+    await fetch("/api/apply", {
+      method: "POST",
+      body: JSON.stringify({
+        ideaId: id,
+        applicantName: name,
+        applicantEmail: email,
+      }),
+    });
+    load();
+  }
 
   return (
     <main style={{ padding: 24 }}>
       <h1>プロジェクト募集</h1>
 
-      <form action={createProject}>
-        <input name="title" placeholder="タイトル" required />
-        <br />
-        <textarea name="description" placeholder="詳細" />
-        <br />
-        <input name="chatName" placeholder="オープンチャット名" />
-        <br />
-        <input name="email" type="email" placeholder="メール（非公開）" required />
-        <br />
-        <button>募集</button>
-      </form>
+      <h2>新規募集</h2>
+      <input placeholder="タイトル" value={form.title}
+        onChange={e => setForm({ ...form, title: e.target.value })} />
+      <br />
+      <textarea placeholder="詳細" value={form.detail}
+        onChange={e => setForm({ ...form, detail: e.target.value })} />
+      <br />
+      <input placeholder="オープンチャット名" value={form.ownerName}
+        onChange={e => setForm({ ...form, ownerName: e.target.value })} />
+      <br />
+      <input placeholder="メールアドレス（非公開）" value={form.ownerEmail}
+        onChange={e => setForm({ ...form, ownerEmail: e.target.value })} />
+      <br />
+      <button onClick={submit}>募集</button>
 
-      <hr />
-      <h1>募集中のプロジェクト</h1>
-
-      {projects.length === 0 && (
-        <p>現在募集中のアイディアはありません</p>
-      )}
-
-      {projects.length > 0 && (
-                 <table border={1}>
+      <h2>募集中一覧</h2>
+      <table border={1}>
         <thead>
           <tr>
             <th>タイトル</th>
+            <th>詳細</th>
+            <th>発案者</th>
             <th>応募数</th>
-            <th>参加</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {projects.map((p: any) => (
-            <tr key={p.id}>
-              <td>{p.title}</td>
-              <td>{p.applicantCount}</td>
+          {ideas.map(i => (
+            <tr key={i.id}>
+              <td>{i.title}</td>
+              <td>{i.detail}</td>
+              <td>{i.ownerName}</td>
+              <td>{i.applicants}</td>
               <td>
-                <form action={applyProject}>
-                  <input type="hidden" name="id" value={p.id} />
-                  <input name="chatName" placeholder="チャット名" required />
-                  <input name="email" type="email" placeholder="メール" required />
-                  <button>参加</button>
-                </form>
+                <button onClick={() => apply(i.id)}>参加</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      )
-    }
     </main>
   );
 }
