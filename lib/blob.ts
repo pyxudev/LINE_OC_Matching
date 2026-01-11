@@ -6,7 +6,7 @@ const INDEX_PATH = "ideas/index.json";
 
 export async function getIndex(): Promise<number[]> {
   try {
-    const res = await fetch(`${process.env.BLOB_URL}/${INDEX_PATH}`, {
+    const res = await fetch(`${process.env.BLOB_ID}.public.blob.vercel-storage.com/${INDEX_PATH}`, {
       cache: "no-store",
     });
     if (!res.ok) {
@@ -38,7 +38,7 @@ export async function saveIdea(id: number, data: any) {
 }
 
 export async function getIdea(id: number) {
-  const res = await fetch(`${process.env.BLOB_URL}/ideas/${id}.json`, {
+  const res = await fetch(`${process.env.BLOB_ID}.public.blob.vercel-storage.com/ideas/${id}.json`, {
     cache: "no-store"
   });
   return await res.json();
