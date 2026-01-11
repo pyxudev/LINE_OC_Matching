@@ -6,6 +6,7 @@ const INDEX_PATH = "ideas/index.json";
 
 export async function getIndex(): Promise<number[]> {
   try {
+    console.log(`${process.env.BLOB_ID}.public.blob.vercel-storage.com/${INDEX_PATH}`);
     const res = await fetch(`${process.env.BLOB_ID}.public.blob.vercel-storage.com/${INDEX_PATH}`, {
       cache: "no-store",
     });
@@ -16,7 +17,8 @@ export async function getIndex(): Promise<number[]> {
     const data = await res.json();
     console.log("index.json raw:", data);
     return Array.isArray(data) ? data : [];
-  } catch {
+  } catch (e) {
+    console.error("getIndex error:", e);
     return [];
   }
 }
