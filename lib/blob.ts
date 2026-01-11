@@ -5,9 +5,10 @@ export const runtime = "nodejs";
 const INDEX_PATH = "ideas/index.json";
 
 export async function getIndex(): Promise<number[]> {
-  console.log("BLOB_URL:", process.env.BLOB_URL);
   try {
-    const res = await fetch(`${process.env.BLOB_URL}/${INDEX_PATH}`);
+    const res = await fetch(`${process.env.BLOB_URL}/${INDEX_PATH}`, {
+      cache: "no-store",
+    });
     if (!res.ok) return [];
     return await res.json();
   } catch {
@@ -32,6 +33,8 @@ export async function saveIdea(id: number, data: any) {
 }
 
 export async function getIdea(id: number) {
-  const res = await fetch(`${process.env.BLOB_URL}/ideas/${id}.json`);
+  const res = await fetch(`${process.env.BLOB_URL}/ideas/${id}.json`, {
+    cache: "no-store"
+  });
   return await res.json();
 }

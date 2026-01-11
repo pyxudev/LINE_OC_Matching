@@ -3,6 +3,7 @@ import { getIndex, saveIndex, saveIdea, getIdea } from "@/lib/blob";
 import { Idea } from "@/types/idea";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const ids = await getIndex();
