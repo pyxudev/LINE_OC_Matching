@@ -1,0 +1,11 @@
+{
+  "projects": [
+    {
+      "id": "uuid-1",
+      "title": "OSS向けLintツール",
+      "projectUrl": "https://blob.vercel-storage.com/....json",
+      "applicantCount": 2,
+      "createdAt": "2026-01-10T12:00:00Z"
+    }
+  ]
+}
