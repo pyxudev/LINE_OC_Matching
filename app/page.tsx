@@ -39,6 +39,11 @@ export default async function Page() {
               <td>
                 <form action={applyProject}>
                   <input type="hidden" name="id" value={p.id} />
+                  <input
+                    type="hidden"
+                    name="projectUrl"
+                    value={p.projectUrl}
+                  />
                   <input name="chatName" placeholder="チャット名" required />
                   <input name="email" type="email" placeholder="メール" required />
                   <button>参加</button>
