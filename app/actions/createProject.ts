@@ -27,15 +27,13 @@ export async function createProject(formData: FormData) {
     isActive: true,
   };
 
-  // project を保存 → URL取得
-  const projectUrl = await writeProject(id, project);
+  await writeProject(id, project);
 
-  // index 更新
   const index = await readIndex();
   index.projects.unshift({
     id,
     title,
-    projectUrl,
+    projectUrl: `https://blob.vercel-storage.com/projects/${id}.json`,
     applicantCount: 0,
     createdAt: project.createdAt,
   });

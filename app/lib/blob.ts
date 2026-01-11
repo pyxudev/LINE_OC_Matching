@@ -1,16 +1,26 @@
-import { put } from "@vercel/blob";
+import { put, head } from "@vercel/blob";
 
+const BASE_URL = "https://blob.vercel-storage.com";
 const INDEX_PATH = "projects/index.json";
 
-/* ------------------
- * index.json
- * ------------------ */
+function blobUrl(path: string) {
+  return `${BASE_URL}/${path}`;
+}
+
+/* --------------------
+   index.json
+-------------------- */
 
 export async function readIndex() {
   try {
-    const res = await fetch(
-      `https://blob.vercel-storage.com/${INDEX_PATH}`
-    );
+    await head(INDEX_PATH, {
+      token: process.env.BLOB_READ_WRITE_TOKEN!,
+    });
+
+    const res = await fetch(blobUrl(INDEX_PATH), {
+      cache: "no-store",
+    });
+
     if (!res.ok) throw new Error();
     return await res.json();
   } catch {
@@ -19,31 +29,49 @@ export async function readIndex() {
 }
 
 export async function writeIndex(data: any) {
-  const blob = await put(
+  await put(
     INDEX_PATH,
     JSON.stringify(data),
-    { access: "public" }
+    {
+      access: "public",
+      token: process.env.BLOB_READ_WRITE_TOKEN!,
+      allowOverwrite: true,
+    }
   );
-  return blob.url;
 }
 
-/* ------------------
- * project
- * ------------------ */
+/* --------------------
+   project
+-------------------- */
 
-export async function writeProject(id: string, data: any) {
-  const blob = await put(
-    `projects/${id}.json`,
-    JSON.stringify(data),
-    { access: "public" }
-  );
-  return blob.url;
-}
+export async function readProject(id: string) {
+  const path = `projects/${id}.json`;
 
-export async function readProject(projectUrl: string) {
-  const res = await fetch(projectUrl);
+  await head(path, {
+    token: process.env.BLOB_READ_WRITE_TOKEN!,
+  });
+
+  const res = await fetch(blobUrl(path), {
+    cache: "no-store",
+  });
+
   if (!res.ok) {
     throw new Error("Project not found");
   }
+
   return await res.json();
+}
+
+export async function writeProject(id: string, data: any) {
+  const path = `projects/${id}.json`;
+
+  await put(
+    path,
+    JSON.stringify(data),
+    {
+      access: "public",
+      token: process.env.BLOB_READ_WRITE_TOKEN!,
+      allowOverwrite: true,
+    }
+  );
 }

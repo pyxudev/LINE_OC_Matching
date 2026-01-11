@@ -14,15 +14,14 @@ export async function applyProject(formData: FormData) {
   rateLimit("apply-project");
 
   const id = String(formData.get("id"));
-  const projectUrl = String(formData.get("projectUrl"));
   const chatName = String(formData.get("chatName") || "").slice(0, 30);
   const email = String(formData.get("email") || "");
 
-  if (!id || !projectUrl || !email) {
+  if (!id || !chatName || !email) {
     throw new Error("Invalid input");
   }
 
-  const project = await readProject(projectUrl);
+  const project = await readProject(id);
   const hash = sha256(email);
 
   if (project.applicants.some((a: any) => a.emailHash === hash)) {
@@ -35,15 +34,13 @@ export async function applyProject(formData: FormData) {
     createdAt: now(),
   });
 
-  // 上書き保存（新URLになる可能性あり）
-  const newProjectUrl = await writeProject(id, project);
+  await writeProject(id, project);
 
-  // index 更新
   const index = await readIndex();
   const item = index.projects.find((p: any) => p.id === id);
   if (item) {
     item.applicantCount++;
-    item.projectUrl = newProjectUrl;
+    item.projectUrl = `https://blob.vercel-storage.com/projects/${id}.json`;
   }
 
   await writeIndex(index);
