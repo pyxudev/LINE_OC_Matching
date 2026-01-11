@@ -1,5 +1,7 @@
 import { put, head } from "@vercel/blob";
 
+export const runtime = "nodejs";
+
 const INDEX_PATH = "ideas/index.json";
 
 export async function getIndex(): Promise<number[]> {
