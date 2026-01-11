@@ -43,3 +43,11 @@ export async function writeProject(id: string, data: any) {
     allowOverwrite: true,
   });
 }
+
+export async function readProject(projectUrl: string) {
+  const res = await fetch(projectUrl);
+  if (!res.ok) {
+    throw new Error("Project not found");
+  }
+  return await res.json();
+}
