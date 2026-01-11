@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getIndex, saveIndex, saveIdea, getIdea } from "@/lib/blob";
 import { Idea } from "@/types/idea";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   const ids = await getIndex();
   const ideas = await Promise.all(ids.map(id => getIdea(id)));

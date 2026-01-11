@@ -3,6 +3,7 @@ import { put, head } from "@vercel/blob";
 const INDEX_PATH = "ideas/index.json";
 
 export async function getIndex(): Promise<number[]> {
+  console.log("BLOB_URL:", process.env.BLOB_URL);
   try {
     const res = await fetch(`${process.env.BLOB_URL}/${INDEX_PATH}`);
     if (!res.ok) return [];
