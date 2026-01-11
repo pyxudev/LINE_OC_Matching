@@ -1,61 +1,41 @@
 import { readIndex } from "./lib/blob";
-import { createProject } from "./actions/createProject";
-import { applyProject } from "./actions/applyProject";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const index = await readIndex();
+  const { projects } = await readIndex();
 
   return (
     <main style={{ padding: 24 }}>
-      <h1>プロジェクト募集</h1>
+      <h1>募集中のプロジェクト</h1>
 
-      <form action={createProject}>
-        <input name="title" placeholder="タイトル" required />
-        <br />
-        <textarea name="description" placeholder="詳細" />
-        <br />
-        <input name="chatName" placeholder="オープンチャット名" />
-        <br />
-        <input name="email" type="email" placeholder="メール（非公開）" required />
-        <br />
-        <button>募集</button>
-      </form>
+      {projects.length === 0 && (
+        <p>現在募集中のアイディアはありません</p>
+      )}
 
-      <hr />
-
-      <table border={1}>
-        <thead>
-          <tr>
-            <th>タイトル</th>
-            <th>応募数</th>
-            <th>参加</th>
-          </tr>
-        </thead>
-        <tbody>
-          {index.projects.length === 0 && (
+      {projects.length > 0 && (
+        <table border={1} cellPadding={8}>
+          <thead>
             <tr>
-              <td colSpan={3}>
-                <small>現在募集中のプロジェクトはありません</small>
-              </td>
+              <th>タイトル</th>
+              <th>詳細</th>
+              <th>発案者</th>
+              <th>応募数</th>
             </tr>
-          )}
-
-          {index.projects.map((p: any) => (
-            <tr key={p.id}>
-              <td>{p.title}</td>
-              <td>{p.applicantCount}</td>
-              <td>
-                <form action={applyProject}>
-                  <input type="hidden" name="id" value={p.id} />
-                  <input name="chatName" placeholder="チャット名" required />
-                  <input name="email" type="email" placeholder="メール" required />
-                  <button type="submit">参加</button>
-                </form>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {projects.map((p) => (
+              <tr key={p.id}>
+                <td>{p.title}</td>
+                <td>{p.detail}</td>
+                <td>{p.ownerName}</td>
+                <td>{p.applicants}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </main>
   );
 }
