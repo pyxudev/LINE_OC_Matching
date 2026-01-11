@@ -88,6 +88,11 @@ export default function Page() {
           </tr>
         </thead>
         <tbody>
+          {ideas.length === 0 ? (
+            <tr>
+              <td colSpan={5}>募集はまだありません。</td>
+            </tr>
+          ) : null}
           {ideas.map(i => (
             <tr key={i.id}>
               <td>{i.title}</td>
