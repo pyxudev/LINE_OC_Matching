@@ -4,7 +4,7 @@ const INDEX_PATH = "ideas/index.json";
 
 export async function getIndex(): Promise<number[]> {
   try {
-    const res = await fetch(`https://blob.vercel-storage.com/${INDEX_PATH}`);
+    const res = await fetch(`${process.env.BLOB_URL}/${INDEX_PATH}`);
     if (!res.ok) return [];
     return await res.json();
   } catch {
