@@ -27,6 +27,6 @@ export async function saveIdea(id: number, data: any) {
 }
 
 export async function getIdea(id: number) {
-  const res = await fetch(`https://blob.vercel-storage.com/ideas/${id}.json`);
+  const res = await fetch(`${process.env.BLOB_URL}/ideas/${id}.json`);
   return await res.json();
 }
