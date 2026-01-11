@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     from: "match@yourdomain.dev",
     to: idea.ownerEmail,
     subject: `【参加希望】${idea.title}`,
+    replyTo: applicantEmail,
     text: `
 参加希望者から連絡がありました。
 
@@ -19,13 +20,15 @@ export async function POST(req: Request) {
 
 このメールに直接返信してください。
 `,
-    replyTo: applicantEmail,
   });
 
-  idea.applicants += 1;
-  idea.applicantNames.push(applicantName);
+  const updated = {
+    ...idea,
+    applicants: idea.applicants + 1,
+    applicantNames: [...idea.applicantNames, applicantName],
+  };
 
-  await saveIdea(ideaId, idea);
+  await saveIdea(ideaId, updated);
 
   return NextResponse.json({ ok: true });
 }
