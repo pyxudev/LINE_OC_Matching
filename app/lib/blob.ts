@@ -14,6 +14,7 @@ export async function readIndex() {
     if (!res.ok) throw new Error();
     return await res.json();
   } catch {
+    console.warn("Index not found, returning empty index");
     return { projects: [] };
   }
 }
