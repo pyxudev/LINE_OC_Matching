@@ -13,11 +13,17 @@ export default function Page() {
   });
 
   async function load() {
-    const res = await fetch("/api/ideas");
-    setIdeas(await res.json());
-    console.log("ideas:", await res.json());
-    if (await res.json() === null) {
+    const res = await fetch("/api/ideas", {
+      cache: "no-store",
+    });
+
+    const data = await res.json();
+
+    if (!data || data.length === 0) {
       console.log("No ideas found");
+    } else {
+      console.log("ideas:", data);
+      setIdeas(data);
     }
   }
 
@@ -49,6 +55,7 @@ export default function Page() {
     });
     load();
   }
+  
 
   return (
     <main style={{ padding: 24 }}>
