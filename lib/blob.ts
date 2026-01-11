@@ -9,8 +9,13 @@ export async function getIndex(): Promise<number[]> {
     const res = await fetch(`${process.env.BLOB_URL}/${INDEX_PATH}`, {
       cache: "no-store",
     });
-    if (!res.ok) return [];
-    return await res.json();
+    if (!res.ok) {
+      console.log("index.json fetch failed:", res.status);
+      return [];
+   }
+    const data = await res.json();
+    console.log("index.json raw:", data);
+    return Array.isArray(data) ? data : [];
   } catch {
     return [];
   }
