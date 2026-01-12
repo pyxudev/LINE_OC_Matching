@@ -75,17 +75,14 @@ textarea:focus {
   box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.5);
 }
 
-/* --------------------
-   Button
--------------------- */
-
 button {
+  display: inline-block;
   margin-top: 12px;
   padding: 10px 16px;
   border-radius: 8px;
   border: none;
-  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-  color: #020617;
+  background: linear-gradient(135deg, #06577c, #103748);
+  color: #e5e7eb;
   font-weight: 600;
   cursor: pointer;
 }
@@ -95,13 +92,14 @@ button:hover {
 }
 
 button:disabled {
-  background: #475569; /* slate-600 */
+  background: #475569;
   cursor: not-allowed;
 }
 
-/* --------------------
-   Table
--------------------- */
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
 
 table {
   width: 100%;
@@ -115,25 +113,33 @@ thead {
 
 th,
 td {
+  min-width: 90px;
   padding: 12px;
   border-bottom: 1px solid #334155;
   text-align: left;
   vertical-align: top;
 }
+.title {
+  max-width: 150px;
+}
+
+.details {
+  max-width: 300px;
+}
+
+.starter {
+  width: 100px;
+}
 
 th {
   font-size: 13px;
-  color: #94a3b8; /* slate-400 */
+  color: #94a3b8;
   text-transform: uppercase;
 }
 
 tbody tr:hover {
   background: rgba(148, 163, 184, 0.05);
 }
-
-/* --------------------
-   Inline form (参加欄)
--------------------- */
 
 td form {
   margin: 0;
@@ -149,15 +155,11 @@ td form button {
   width: 100%;
 }
 
-/* --------------------
-   Utility
--------------------- */
-
 small {
   color: #94a3b8;
 }
 
 .error {
-  color: #f87171; /* red-400 */
+  color: #f87171;
   margin-top: 8px;
 }
