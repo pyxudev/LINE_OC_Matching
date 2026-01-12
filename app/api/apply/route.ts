@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const idea = await getIdea(ideaId);
 
   await resend.emails.send({
-    from: applicantEmail,
+    from: "info@lowlevelengineers.com",
     to: idea.ownerEmail,
     subject: `【参加希望】${idea.title}`,
     replyTo: applicantEmail,
