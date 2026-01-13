@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "LINE OC Idea Matching",
-  description: "You can find your project members here.",
+  description: "Find ideas and your project members here.",
 };
 
 export default function RootLayout({
