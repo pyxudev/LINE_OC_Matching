@@ -89,7 +89,7 @@ export default function Page() {
       <hr></hr>
 
       <h2>募集中一覧</h2>
-      <table border={1}>
+      <table className="ideas">
         <thead>
           <tr>
             <th className="title">タイトル</th>
