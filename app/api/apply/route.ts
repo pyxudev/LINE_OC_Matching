@@ -5,7 +5,15 @@ import { resend } from "@/lib/mail";
 export async function POST(req: Request) {
   const { ideaId, applicantName, applicantEmail } = await req.json();
 
+  if (!applicantEmail?.trim()) {
+    return NextResponse.json({ ng: false });
+  }
+
   const idea = await getIdea(ideaId);
+
+  if (!idea.ownerEmail?.trim()) {
+    return NextResponse.json({ ng: false });
+  }
 
   await resend.emails.send({
     from: "info@lowlevelengineers.com",
