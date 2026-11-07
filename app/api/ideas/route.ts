@@ -6,22 +6,10 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const ids = await getIndex();
-  // console.log("ids:", ids);
-
-  const results = await Promise.allSettled(
-    ids.map(id => getIdea(id))
-  );
-
-  const ideas = results
-    .filter(result => result.status === "fulfilled")
-    .map(result => result.value)
-    .filter(
-      idea =>
-        idea &&
-        (!idea.ownerEmail || idea.ownerEmail.trim() !== "")
-    );
-
+  const ids = await getIndex();  
+  console.log("ids:", ids);
+  
+  const ideas = await Promise.all(ids.map(id => getIdea(id)));
   return NextResponse.json(ideas);
 }
 
@@ -29,7 +17,8 @@ export async function POST(req: Request) {
   const body = await req.json();
 
   if (!body.ownerEmail?.trim()) {
-     return NextResponse.json({ ng: "owner_email_false" });
+    console.log("owner_email_false");
+    return NextResponse.json({ ng: "owner_email_false" });
   }
 
   const ids = await getIndex();
