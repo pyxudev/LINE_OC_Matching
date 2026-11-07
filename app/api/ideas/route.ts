@@ -9,18 +9,20 @@ export async function GET() {
   const ids = await getIndex();
   // console.log("ids:", ids);
 
-  const results = await Promise.allSettled(ids.map(id => getIdea(id)));
+  const results = await Promise.allSettled(
+    ids.map(id => getIdea(id))
+  );
+
   const ideas = results
     .filter(result => result.status === "fulfilled")
     .map(result => result.value)
     .filter(
       idea =>
         idea &&
-        typeof idea.ownerEmail === "string" &&
-        idea.ownerEmail.trim() !== ""
+        (!idea.ownerEmail || idea.ownerEmail.trim() !== "")
     );
 
-   return NextResponse.json(ideas);
+  return NextResponse.json(ideas);
 }
 
 export async function POST(req: Request) {
