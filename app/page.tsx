@@ -25,6 +25,8 @@ export default function Page() {
 
     if (!data || data.length === 0) {
       console.log("No ideas found");
+    } else {
+      setIdeas(data);
     }
   }
 
