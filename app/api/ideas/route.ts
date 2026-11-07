@@ -19,8 +19,9 @@ export async function GET() {
         typeof idea.ownerEmail === "string" &&
         idea.ownerEmail.trim() !== ""
     );
-
-   return NextResponse.json(ideas);
+  
+  console.log(NextResponse.json(ideas))
+  return NextResponse.json(ideas);
 }
 
 export async function POST(req: Request) {
