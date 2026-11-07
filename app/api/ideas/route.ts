@@ -17,7 +17,8 @@ export async function POST(req: Request) {
   const body = await req.json();
 
   if (!body.ownerEmail?.trim()) {
-     return NextResponse.json({ ng: "owner_email_false" });
+    console.log("owner_email_false");
+    return NextResponse.json({ ng: "owner_email_false" });
   }
 
   const ids = await getIndex();
