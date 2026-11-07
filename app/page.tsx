@@ -13,32 +13,18 @@ export default function Page() {
   });
 
   async function load() {
-    try {
-      const res = await fetch("/api/ideas", {
-        cache: "no-store",
-      });
+    const res = await fetch("/api/ideas", {
+      cache: "no-store",
+    });
 
-      if (!res.ok) {
-        throw new Error(`HTTP Error: ${res.status}`);
-      }
+    if (!res.ok) {
+      throw new Error(`HTTP Error: ${res.status}`);
+    }
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!data || data.length === 0) {
-        console.log("No ideas found");
-      } else {
-        if (data.ok === true) {
-          setIdeas(data);
-        }
-        if (data.ng === "owner_email_false") {
-          alert(
-            "プロジェクト掲載は失敗しました\n掲載者のメールアドレスが登録されていないため、申請の連絡が行き届きません",
-          );
-        }
-      }
-    } catch (error) {
-      console.error("Application error:", error);
-      alert("通信エラーが発生しました。時間をおいて再度お試しください。");
+    if (!data || data.length === 0) {
+      console.log("No ideas found");
     }
   }
 
